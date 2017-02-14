@@ -41,12 +41,24 @@ class Handler(webapp2.RequestHandler):
         self.write(self.render_str(template,**params))
 
 class MainPage(Handler):
-    def render_main(self, title="", body="",error=""):
-
-        self.render("main.html",title=title, body=body,error=error)
 
     def get(self):
         self.render("main.html")
+
+class Blog(Handler):
+
+    def get(self):
+        posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC LIMIT 5")
+        self.render("blog.html", posts=posts)
+
+
+class NewPost(Handler):
+
+    def render_post(self, title="",body="",error=""):
+        self.render("new_post.html", title=title, body=body, error=error)
+
+    def get(self):
+        self.render("new_post.html")
 
     def post(self):
         title = self.request.get("title")
@@ -61,24 +73,27 @@ class MainPage(Handler):
             self.redirect('/blog')
 
         else:
-            self.render_main(title,body,error)
+            self.render_post(title,body,error)
 
-class BlogHandler(Handler):
+class SinglePost(Handler):
 
-    def get(self):
+    def get(self,id):
 
-        posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
+        p = Post.get_by_id(int(id))
 
-        self.render("blog.html", posts=posts)
+        if p:
+            self.render("individual_posts.html", title=p.title, body=p.body, error="")
 
-    def post(self):
+        else:
+            error= "Oops, something went wrong!"
+            self.render("individual_posts.html", title="", body="", error=error)
 
-        posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
 
-        self.render("blog.html", posts=posts)
 
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/blog', BlogHandler),
+    ('/blog', Blog),
+    ('/blog/new_post', NewPost),
+    webapp2.Route('/blog/<id:\d+>', SinglePost)
 ], debug=True)

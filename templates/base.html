@@ -3,14 +3,91 @@
 <html>
 
     <head>
-        <title>Blog</title>
+        <title>blog</title>
+
+        <style type="text/css">
+            body {
+                font-family: sans-serif;
+                width: 800px;
+                margin: 0 auto;
+                padding: 10px;
+            }
+
+            a.nav:link, a.nav:visited {
+                background-color: #f44336;
+                color: white;
+                padding: 14px 25px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+            }
+
+            a.nav:hover, a.nav:active {
+            background-color: #9e9e9e;
+            }
+
+            a.post-title:link, a.post-title:visited {
+                color: #607d8b;
+                text-decoration: none;
+                
+            }
+
+            .error {
+                color: red;
+            }
+
+            label {
+                display: block;
+                font-size: 20px;
+            }
+
+            input[type=text] {
+                width: 400px;
+                font-size: 20px;
+                padding: 2px;
+            }
+
+            textarea {
+                width: 400px;
+                height: 200px;
+                font-size: 17px;
+                font-family: monospace;
+            }
+
+            hr {
+                margin: 20px auto;
+            }
+
+            .post + .post {
+                margin-top: 20px;
+            }
+
+            .post-title {
+                font-weight: bold;
+                font-size: 20px;
+            }
+
+            .post-body {
+                margin: 0;
+                font-size: 17px;
+            }
+            .button {
+                color: white;
+                padding: 5px 15px;
+                background: #f44336;
+                border: 0 none;
+                cursor: pointer;
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+            }
+        </style>
     </head>
     <body>
         <div class="nav">
-            <a href="/blog">Blog</a>
-            <a href="/">New Post</a>
+            <a class="nav" href="/blog">blog</a>
+            <a class="nav" href="/blog/new_post">new post</a>
         </div>
-
+        <h1>blogaroo</h1>
 
         {% block content %}
         {% endblock %}
